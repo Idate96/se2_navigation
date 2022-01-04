@@ -26,7 +26,11 @@ void PlannerRos::setGoalState(const State& goalState) {
   planner_->setGoalState(goalState);
 }
 bool PlannerRos::plan() {
-  return planner_->plan();
+  if (!planner_->plan()) {
+    ROS_WARN("Planning failed");
+    return false;
+  }
+  return true;
 }
 void PlannerRos::getPath(Path* path) const {
   planner_->getPath(path);

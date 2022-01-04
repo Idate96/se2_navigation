@@ -53,7 +53,20 @@ void OmplReedsSheppPlanner::createDefaultStateSpace() {
   setStateSpaceBoundaries();
 }
 bool OmplReedsSheppPlanner::plan() {
-  bool result = BASE::plan();
+  bool result = false;
+  int replanningSteps = 0;
+  std::cout << "Max planning attempts: " << parameters_.maxReplanningAttempts_ << std::endl;
+  if (parameters_.replan_) {
+    while (!result && replanningSteps < parameters_.maxReplanningAttempts_) {
+      if (replanningSteps > 0) {
+        std::cout << "Replanning attempt " << replanningSteps << " failed. Trying again." << std::endl;
+      }
+      result = BASE::plan();
+      replanningSteps++;
+    }
+  } else {
+    result = BASE::plan();
+  }
   *interpolatedPath_ = interpolatePath(*path_, parameters_.pathSpatialResolution_);
   return result;
 }
