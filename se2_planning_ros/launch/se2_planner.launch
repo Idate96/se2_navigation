@@ -22,5 +22,4 @@
 		args="-d $(arg rviz_config_file)" required="true"
 		if="$(arg launch_rviz)" />
 
-
 </launch>

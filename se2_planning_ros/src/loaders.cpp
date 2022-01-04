@@ -33,6 +33,8 @@ OmplReedsSheppPlannerParameters loadOmplReedsSheppPlannerParameters(const std::s
     auto node = basenode["planner"];
     parameters.pathSpatialResolution_ = node["path_spatial_resolution"].as<double>();
     parameters.maxPlanningTime_ = node["max_planning_time"].as<double>();
+    parameters.replan_ = node["replan"].as<bool>();
+    parameters.maxReplanningAttempts_ = node["max_replanning_attempts"].as<int>();
     parameters.omplPlannerName_ = node["ompl_planner"].as<std::string>();
   }
 
@@ -96,7 +98,9 @@ void loadOmplPlannerParameters(OmplPlanners type, const std::string& filename, O
       // do nothing
       break;
     }
-    default: { throw std::runtime_error("Unknown parameters type"); }
+    default: {
+      throw std::runtime_error("Unknown parameters type");
+    }
   }
 }
 

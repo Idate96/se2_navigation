@@ -35,16 +35,16 @@ void OmplPlanner::getPath(Path* path) const {
 bool OmplPlanner::plan() {
   simpleSetup_->clear();
   simpleSetup_->setStartAndGoalStates(*startState_, *goalState_);
-  if (!simpleSetup_->solve(maxPlanningDuration_)) {
+  simpleSetup_->solve(maxPlanningDuration_);
+  auto plannerStatus = simpleSetup_->getLastPlannerStatus();
+
+  if (plannerStatus != ompl::base::PlannerStatus::EXACT_SOLUTION) {
     std::cout << "OmplPlanner: Solve failed" << std::endl;
     return false;
   }
-
   const ompl::geometric::PathGeometric solution = simpleSetup_->getSolutionPath();
   *path_ = solution;
   *interpolatedPath_ = solution;
-  // std::cout << "Solution plan has: " << solution.getStateCount() << " states." << std::endl;
-
   return true;
 }
 bool OmplPlanner::reset() {
