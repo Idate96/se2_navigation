@@ -52,10 +52,10 @@ void OmplReedsSheppPlanner::createDefaultStateSpace() {
   bounds_ = std::make_unique<ompl::base::RealVectorBounds>(reedsSheppStateSpaceDim_);
   setStateSpaceBoundaries();
 }
+
 bool OmplReedsSheppPlanner::plan() {
   bool result = false;
   int replanningSteps = 0;
-  std::cout << "Max planning attempts: " << parameters_.maxReplanningAttempts_ << std::endl;
   if (parameters_.replan_) {
     while (!result && replanningSteps < parameters_.maxReplanningAttempts_) {
       if (replanningSteps > 0) {
@@ -70,6 +70,7 @@ bool OmplReedsSheppPlanner::plan() {
   *interpolatedPath_ = interpolatePath(*path_, parameters_.pathSpatialResolution_);
   return result;
 }
+
 void OmplReedsSheppPlanner::setStateSpaceBoundaries() {
   bounds_->low[0] = parameters_.xLowerBound_;
   bounds_->low[1] = parameters_.yLowerBound_;
