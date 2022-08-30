@@ -89,9 +89,10 @@ bool isInCollision(const SE2state& state, const std::vector<Vertex>& footprint, 
                    const std::string& obstacleLayer) {
   const double Cos = std::cos(state.yaw_);
   const double Sin = std::sin(state.yaw_);
+  // Base position in world frame
   const double dx = state.x_;
   const double dy = state.y_;
-
+  // convert footprint from base frame to world frame
   auto transformOperator = [Cos, Sin, dx, dy](const Vertex& v) -> Vertex {
     return Vertex{Cos * v.x_ - Sin * v.y_ + dx, Sin * v.x_ + Cos * v.y_ + dy};
   };
